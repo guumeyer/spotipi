@@ -41,7 +41,8 @@ if len(sys.argv) > 2:
     options.limit_refresh_rate_hz = int(config['DEFAULT']['refresh_rate'])
 
     default_image = os.path.join(dir, config['DEFAULT']['default_image'])
-    print(default_image)
+    
+    print("default_image:", default_image)
     matrix = RGBMatrix(options = options)
 
     prevSong    = ""
@@ -54,14 +55,17 @@ if len(sys.argv) > 2:
           currentSong = imageURL
 
           if ( prevSong != currentSong ):
+            print("display image", imageURL)
             response = requests.get(imageURL)
+            # print("downloaded image", response.content)
             image = Image.open(BytesIO(response.content))
-            image.thumbnail((matrix.width, matrix.height), Image.ANTIALIAS)
+            image.thumbnail((matrix.width, matrix.height), Image.LANCZOS)
             matrix.SetImage(image.convert('RGB'))
             prevSong = currentSong
 
           time.sleep(1)
         except Exception as e:
+          print("Exception", e)
           image = Image.open(default_image)
           image.thumbnail((matrix.width, matrix.height), Image.ANTIALIAS)
           matrix.SetImage(image.convert('RGB'))

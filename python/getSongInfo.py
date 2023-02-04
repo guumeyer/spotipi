@@ -19,7 +19,8 @@ def getSongInfo(username, token_path):
       else:  
         song = result["item"]["name"]
         imageURL = result["item"]["album"]["images"][0]["url"]
-        print(song)
+        print("song:", song)
+        print("imageURL:", imageURL)
         return [song, imageURL]
   else:
       print("Can't get token for", username)
